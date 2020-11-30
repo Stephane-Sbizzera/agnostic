@@ -1,4 +1,6 @@
 FROM puckel/docker-airflow:latest
+COPY requirements.txt .
+RUN pip install --user -r requirements.txt
 
 USER root
 RUN whoami
@@ -102,7 +104,6 @@ EXPOSE 9083
 EXPOSE 10000
 
 CMD ["bin/spark-class", "org.apache.spark.deploy.master.Master"]
-
 
 # This is Require to solve the partition.assignment.strategy during spark-submit
 COPY kafka-clients-1.1.0.jar $SPARK_HOME/jars/
