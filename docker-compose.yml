@@ -119,10 +119,6 @@ services:
     image: prom/alertmanager
     container_name: alertmanager
     privileged: true
-    volumes:
-      - ./alertmanager/alertmanager.yml:/alertmanager.yml
-    command:
-      - '--config.file=/alertmanager.yml'
     ports:
       - '9096:9093'
 
@@ -168,6 +164,7 @@ services:
       volumes: # mount the following local folders
           - ./airflow_docker/dags:/usr/local/airflow/dags
           - ./airflow_docker/data:/usr/local/airflow/data
+          - ./airflow_docker/requirements.txt:/requirements.txt
       ports:
           - "8080:8080"                               # expose port
       command: webserver
