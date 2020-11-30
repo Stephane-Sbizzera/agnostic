@@ -59,9 +59,9 @@ spec:
       restartPolicy: Always
       volumes:
         - hostPath:
-            path: /Users/stephanesbizzera/Documents/AirFlow_Kafka_Spark_Docker/Project_Flight_Docker2/kafka/prometheus
+            path: /Users/stephanesbizzera/PycharmProjects/agnostic/kafka/prometheus
           name: kafka1-hostpath0
         - hostPath:
-            path: /Users/stephanesbizzera/Documents/AirFlow_Kafka_Spark_Docker/Project_Flight_Docker2
+            path: /Users/stephanesbizzera/PycharmProjects/agnostic
           name: kafka-kafka1
 status: {}

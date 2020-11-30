@@ -36,6 +36,6 @@ spec:
       restartPolicy: Always
       volumes:
         - hostPath:
-            path: /Users/stephanesbizzera/Documents/AirFlow_Kafka_Spark_Docker/Project_Flight_Docker2
+            path: /Users/stephanesbizzera/PycharmProjects/agnostic
           name: kafka-zookeeper
 status: {}

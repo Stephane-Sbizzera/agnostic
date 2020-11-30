@@ -52,9 +52,9 @@ spec:
       restartPolicy: Always
       volumes:
         - hostPath:
-            path: /Users/stephanesbizzera/Documents/AirFlow_Kafka_Spark_Docker/Project_Flight_Docker2/airflow_docker/dags
+            path: /Users/stephanesbizzera/PycharmProjects/agnostic/airflow_docker/dags
           name: airflow-hostpath0
         - hostPath:
-            path: /Users/stephanesbizzera/Documents/AirFlow_Kafka_Spark_Docker/Project_Flight_Docker2/airflow_docker/data
+            path: /Users/stephanesbizzera/PycharmProjects/agnostic/airflow_docker/data
           name: airflow-hostpath1
 status: {}

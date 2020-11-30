@@ -38,9 +38,9 @@ spec:
       restartPolicy: Always
       volumes:
         - hostPath:
-            path: /Users/stephanesbizzera/Documents/AirFlow_Kafka_Spark_Docker/Project_Flight_Docker2/prometheus/prometheus.yml
+            path: /Users/stephanesbizzera/PycharmProjects/agnostic/prometheus/prometheus.yml
           name: prometheus-hostpath0
         - hostPath:
-            path: /Users/stephanesbizzera/Documents/AirFlow_Kafka_Spark_Docker/Project_Flight_Docker2/prometheus/flink.rules.yml
+            path: /Users/stephanesbizzera/PycharmProjects/agnostic/prometheus/flink.rules.yml
           name: prometheus-hostpath1
 status: {}

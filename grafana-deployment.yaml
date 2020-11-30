@@ -39,6 +39,6 @@ spec:
       restartPolicy: Always
       volumes:
         - hostPath:
-            path: /Users/stephanesbizzera/Documents/AirFlow_Kafka_Spark_Docker/Project_Flight_Docker2/grafana/provisioning
+            path: /Users/stephanesbizzera/PycharmProjects/agnostic/grafana/provisioning
           name: grafana-hostpath0
 status: {}
