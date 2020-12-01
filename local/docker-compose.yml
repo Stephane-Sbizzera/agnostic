@@ -1,63 +1,5 @@
 version: "3.7"
 services:
-  namenode:
-    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
-    container_name: namenode
-    restart: always
-    ports:
-      - 9870:9870
-      - 9004:9004
-    volumes:
-      - hadoop_namenode:/hadoop/dfs/name
-    environment:
-      - CLUSTER_NAME=test
-    env_file:
-      - ./hadoop.env
-
-  datanode:
-    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
-    container_name: datanode
-    restart: always
-    volumes:
-      - hadoop_datanode:/hadoop/dfs/data
-    depends_on:
-      - namenode
-    env_file:
-      - ./hadoop.env
-
-  resourcemanager:
-    image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
-    container_name: resourcemanager
-    restart: always
-    depends_on:
-      - namenode
-      - datanode
-    env_file:
-      - ./hadoop.env
-
-  nodemanager1:
-    image: bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8
-    container_name: nodemanager
-    restart: always
-    depends_on:
-      - namenode
-      - resourcemanager
-      - datanode
-    env_file:
-      - ./hadoop.env
-
-  historyserver:
-    image: bde2020/hadoop-historyserver:2.0.0-hadoop3.2.1-java8
-    container_name: historyserver
-    restart: always
-    volumes:
-      - hadoop_historyserver:/hadoop/yarn/timeline
-    env_file:
-      - ./hadoop.env
-    depends_on:
-      - namenode
-      - resourcemanager
-      - datanode
 
   zookeeper:
     image: wurstmeister/zookeeper:latest
@@ -182,29 +124,18 @@ services:
         - POSTGRES_USER=airflow
         - POSTGRES_PASSWORD=airflow
         - POSTGRES_DB=airflow
-    depends_on:
-      - namenode
-      - resourcemanager
-      - datanode
 
   redis:
     image: 'redis:3.2.7'
-    depends_on:
-      - namenode
-      - resourcemanager
-      - datanode
 
   airflow: # create airflow container
-      build: './airflow_docker'
-      #image: puckel/docker-airflow:1.8.1                    # construct the container along the Dockerfile in this folder
+      # build: './airflow_docker'
+      image: puckel/docker-airflow:1.8.1                    # construct the container along the Dockerfile in this folder
       container_name: airflow_container
       restart: always
       depends_on:
           - postgres
           - redis
-          - namenode
-          - resourcemanager
-          - datanode
       environment:
           - LOAD_EX=n
           - EXECUTOR=Celery
@@ -227,9 +158,6 @@ services:
     restart: always
     depends_on:
       - redis
-      - namenode
-      - resourcemanager
-      - datanode
     environment:
       - EXECUTOR=Celery
     ports:
@@ -241,9 +169,6 @@ services:
     restart: always
     depends_on:
       - airflow
-      - namenode
-      - resourcemanager
-      - datanode
     volumes: # mount the following local folders
         - ./airflow_docker/dags:/usr/local/airflow/dags
     environment:
@@ -271,20 +196,9 @@ services:
     command: worker
 
 
-  socat:
-    image: bpack/socat
-    container_name: socat
-    command: TCP4-LISTEN:2375,fork,reuseaddr UNIX-CONNECT:/var/run/docker.sock
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    expose:
-      - "2375"
 
 
 volumes:
   kafka_zookeeper:
   kafka_kafka1:
   kafka_kafka2:
-  hadoop_namenode:
-  hadoop_datanode:
-  hadoop_historyserver:
