@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert --volumes hostPath
+    kompose.version: 1.22.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: socat
+  name: socat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: socat
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert --volumes hostPath
+        kompose.version: 1.22.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: socat
+    spec:
+      containers:
+        - args:
+            - TCP4-LISTEN:2375,fork,reuseaddr
+            - UNIX-CONNECT:/var/run/docker.sock
+          image: bpack/socat
+          name: socat
+          ports:
+            - containerPort: 2375
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/run/docker.sock
+              name: socat-hostpath0
+      restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /var/run/docker.sock
+          name: socat-hostpath0
+status: {}

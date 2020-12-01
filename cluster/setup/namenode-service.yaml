@@ -6,17 +6,17 @@ metadata:
     kompose.version: 1.22.0 (HEAD)
   creationTimestamp: null
   labels:
-    io.kompose.service: spark-master
-  name: spark-master
+    io.kompose.service: namenode
+  name: namenode
 spec:
   ports:
-    - name: "8079"
-      port: 8079
-      targetPort: 8079
-    - name: "7077"
-      port: 7077
-      targetPort: 7077
+    - name: "9870"
+      port: 9870
+      targetPort: 9870
+    - name: "9004"
+      port: 9004
+      targetPort: 9004
   selector:
-    io.kompose.service: spark-master
+    io.kompose.service: namenode
 status:
   loadBalancer: {}

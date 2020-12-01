@@ -6,14 +6,14 @@ metadata:
     kompose.version: 1.22.0 (HEAD)
   creationTimestamp: null
   labels:
-    io.kompose.service: spark-worker-1
-  name: spark-worker-1
+    io.kompose.service: socat
+  name: socat
 spec:
   ports:
-    - name: "8068"
-      port: 8068
-      targetPort: 8068
+    - name: "2375"
+      port: 2375
+      targetPort: 2375
   selector:
-    io.kompose.service: spark-worker-1
+    io.kompose.service: socat
 status:
   loadBalancer: {}
