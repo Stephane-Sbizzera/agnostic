@@ -20,8 +20,6 @@ resource "azurerm_template_deployment" "hdi" {
       "existingSQLServerPassword" = var.sql_password
       "existingAmbariSqlDBName" = "${var.prefix}ambarisqldb"
       "existingVirtualNetworkResourceGroup" = "${var.prefix}-rg"
-      "existingVirtualNetworkName" =  "${var.prefix}-vnet"
-      "existingVirtualNetworkSubnetName" = "hdi-subnet"
       "existingAdlsGen2StgAccountResourceGroup" = "${var.prefix}-rg"
       "existingAdlsGen2StgAccountname" = "${var.prefix}stg"
       "newOrExistingAdlsGen2FileSystem" = "${var.prefix}fs"
@@ -29,16 +27,4 @@ resource "azurerm_template_deployment" "hdi" {
       "existingHdiUserManagedIdentityName" = "${var.prefix}hdiumi"
    }
   deployment_mode = "Incremental"
-  depends_on =   [
-    azurerm_sql_virtual_network_rule.sqlvnetrule,
-    azurerm_sql_firewall_rule.hdimgmt-region-iprange1,
-    azurerm_sql_firewall_rule.hdimgmt-region-iprange2,
-    azurerm_sql_database.ambaridb,
-    azurerm_role_assignment.stg_auth_hdiuseridentity,
-    azurerm_subnet_network_security_group_association.hdi-subnet-nsg-association,
-    azurerm_network_security_rule.AllowHDIManagement1,
-    azurerm_network_security_rule.AllowHDIManagement2,
-    azurerm_virtual_network.vnet,
-    azurerm_subnet.hdi-subnet
-  ]
 }

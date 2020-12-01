@@ -162,6 +162,9 @@ variable resource_group_name {
     default = "test"
 }
 
+//variable "ssh_public_key" {
+//    default = "~/.ssh/id_rsa.pub"
+//}
 
 variable log_analytics_workspace_name {
     default = "testLogAnalyticsWorkspaceName"

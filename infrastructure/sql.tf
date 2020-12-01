@@ -41,16 +41,3 @@ resource "azurerm_sql_firewall_rule" "hdimgmt-region-iprange2" {
   start_ip_address    = var.allow_hdimgmt_region_ip2
   end_ip_address      = var.allow_hdimgmt_region_ip2
 }
-
-resource "azurerm_sql_virtual_network_rule" "sqlvnetrule" {
-  name                = "allow-hdi-subnet"
-  resource_group_name = azurerm_resource_group.rg.name
-  server_name         = azurerm_sql_server.sqlsrv.name
-  subnet_id           = azurerm_subnet.hdi-subnet.id
-  
-  depends_on = [
-                 azurerm_subnet.hdi-subnet, 
-                 azurerm_network_security_group.hdi-subnet-nsg,
-                 azurerm_subnet_network_security_group_association.hdi-subnet-nsg-association
-                ]
-}
