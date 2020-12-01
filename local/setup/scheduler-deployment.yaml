@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert --volumes hostPath
+    kompose.version: 1.22.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: scheduler
+  name: scheduler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: scheduler
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert --volumes hostPath
+        kompose.version: 1.22.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: scheduler
+    spec:
+      containers:
+        - args:
+            - scheduler
+          env:
+            - name: EXECUTOR
+              value: Celery
+            - name: FERNET_KEY
+              value: 46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+            - name: LOAD_EX
+              value: "y"
+            - name: POSTGRES_DB
+              value: airflow
+            - name: POSTGRES_PASSWORD
+              value: airflow
+            - name: POSTGRES_USER
+              value: airflow
+          image: puckel/docker-airflow:1.8.1
+          name: scheduler
+          resources: {}
+          volumeMounts:
+            - mountPath: /usr/local/airflow/dags
+              name: scheduler-hostpath0
+      restartPolicy: Always
+      volumes:
+        - hostPath:
+            path: /Users/stephanesbizzera/PycharmProjects/agnostic/setup/airflow_docker/dags
+          name: scheduler-hostpath0
+status: {}
