@@ -129,7 +129,11 @@ services:
     image: 'redis:3.2.7'
 
   airflow: # create airflow container
+<<<<<<< HEAD
       # build: './airflow_docker'
+=======
+#      build: './airflow_docker'
+>>>>>>> 45c6beaf8c0c18373b819c4df8b3d3d723338c74
       image: puckel/docker-airflow:1.8.1                    # construct the container along the Dockerfile in this folder
       container_name: airflow_container
       restart: always
