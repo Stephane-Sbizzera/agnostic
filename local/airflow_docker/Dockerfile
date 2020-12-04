@@ -2,8 +2,8 @@ FROM puckel/docker-airflow:latest
 
 WORKDIR /usr/local/airflow/
 COPY requirements.txt .
-RUN pip install --user -r requirements.txt
-
+RUN pip3 install --user -r requirements.txt
+RUN pip3 install --user azure-storage-blob --upgrade
 # USER root
 # RUN groupadd --gid 999 docker \
 # && usermod -aG docker airflow
