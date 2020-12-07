@@ -3,24 +3,48 @@ from json import dump, dumps
 # Airflow
 import airflow
 from airflow import DAG
-from airflow.contrib.sensors.wasb_sensor import WasbBlobSensor
-from airflow.contrib.hooks.wasb_hook import WasbHook
+from airflow.providers.microsoft.azure.sensors.wasb import WasbBlobSensor
+from airflow.providers.microsoft.azure.hooks.wasb import WasbHook
 from airflow.operators import PythonOperator
 #HDFS
 from hdfs import InsecureClient
 # Utils
-from src.stream_flight_data.Blob import BlobSamples
+# from src.stream_flight_data.Blob import BlobSamples
+
+from airflow.providers.microsoft.azure.sensors.wasb import WasbBlobSensor
+from airflow.providers.microsoft.azure.hooks.wasb import WasbHook
+from airflow import settings
+from airflow.models import Connection
+
+account_name = 'terraformaccount2'
+key = 'xxxxxxx'
+conn_id='wasb_default'
+
+conn = Connection(
+        conn_id=conn_id,
+        login=account_name,
+        password=key,
+) #create a connection object
+session = settings.Session() # get the session
+session.add(conn)
+session.commit() # it will insert the connection object programmatically.
+hook = WasbHook(wasb_conn_id='wasb_default')
+AZURE_CONTAINER_NAME = 'tfstate'
+blob_name ='ls.csv'
+file_path = '../'
+
 
 # Azure strings
-connection_string = 'xxxx'
+connection_string = 'DefaultEndpointsProtocol=https;AccountName=terraformaccount2;AccountKey=R+7/s6BFH+O+qCmdOfRrBdls94+VqkA51KwT/xOig5Hsl+LiHZJ7hv8zN36InVhWfNf46g5YVlNcpB6JtqUZRQ==;EndpointSuffix=core.windows.net'
 AZURE_CONTAINER_NAME = 'tfstate'
 account_name = 'terraformaccount2'
 BLOB_NAME = 'ls.csv'
 
-bl = BlobSamples(connection_string, AZURE_CONTAINER_NAME, BLOB_NAME,'test.csv')
+# bl = BlobSamples(connection_string, AZURE_CONTAINER_NAME, BLOB_NAME,'test.csv')
 
 def callAzure():
-    bl.block_blob_sample()
+    print('Hello')
+    hook.get_file(file_path, AZURE_CONTAINER_NAME, blob_name)
 
 def write_to_hdfs():
     records = [
@@ -29,7 +53,7 @@ def write_to_hdfs():
     ]
 
     # As a context manager:
-    client = InsecureClient('http://host:port', user='ann')
+    client = InsecureClient('http://namenode:9000', user='ann')
     with client.write('data/records.jsonl', encoding='utf-8') as writer:
         dump(records, writer)
 
@@ -51,7 +75,15 @@ dag = DAG(
 )
 
 
-wait_for_blob = WasbBlobSensor(
+# wait_for_blob = WasbBlobSensor(
+#     task_id="wait_for_blob",
+#     wasb_conn_id=connection_string,
+#     container_name=AZURE_CONTAINER_NAME,
+#     blob_name=BLOB_NAME,
+#     dag=dag
+# )
+
+wait_for_blob = WasbHook(
     task_id="wait_for_blob",
     wasb_conn_id=connection_string,
     container_name=AZURE_CONTAINER_NAME,

@@ -3,11 +3,14 @@
 matplotlib==3.0.3
 # pyspark==2.4.4
 # psycopg2
-azure-core==1.9.0
-azure-storage-blob==12.6.0
-google-cloud-storage
+# azure-core==1.9.0
+# azure-storage-blob==12.6.0
+# google-cloud-storage
 docker==4.0.2
 hdfs
 apache-airflow[postgres, google]
+apache-airflow-providers-microsoft-azure
+apache-airflow[microsoft.azure]
 # apache-airflow-backport-providers-microsoft-azure
+
 
