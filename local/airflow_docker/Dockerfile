@@ -1,11 +1,13 @@
 FROM puckel/docker-airflow:latest
-
-WORKDIR /usr/local/airflow/
+ARG AIRFLOW_HOME=/.local/bin/
+RUN export AIRFLOW_HOME=/.local/bin/
+RUN PATH=$PATH:/.local/bin/
+ENV AIRFLOW_HOME=${AIRFLOW_HOME}
 COPY requirements.txt .
 COPY test.py .
 RUN pip3 install --user -r requirements.txt
-#RUN pip3 install --user azure-storage-blob --upgrade
-# USER root
+#RUN pip3 install --user apache-airflow--upgrade
+
 # RUN groupadd --gid 999 docker \
 # && usermod -aG docker airflow
 # RUN pip install docker

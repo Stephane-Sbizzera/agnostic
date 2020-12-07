@@ -8,9 +8,8 @@ matplotlib==3.0.3
 # google-cloud-storage
 docker==4.0.2
 hdfs
-apache-airflow[postgres, google]
-apache-airflow-providers-microsoft-azure
-apache-airflow[microsoft.azure]
+# apache-airflow==1.10.13
+# apache-airflow[azure_blob_storage]
+# apache-airflow[microsoft.azure]
 # apache-airflow-backport-providers-microsoft-azure
-
-
+apache-airflow-providers-microsoft-azure

@@ -5,19 +5,19 @@ import airflow
 from airflow import DAG
 from airflow.providers.microsoft.azure.sensors.wasb import WasbBlobSensor
 from airflow.providers.microsoft.azure.hooks.wasb import WasbHook
+
+# from airflow.contrib.hooks.wasb_hook import WasbHook
+# from airflow.contrib.sensors.wasb_sensor import WasbBlobSensor
 from airflow.operators import PythonOperator
 #HDFS
 from hdfs import InsecureClient
 # Utils
 # from src.stream_flight_data.Blob import BlobSamples
-
-from airflow.providers.microsoft.azure.sensors.wasb import WasbBlobSensor
-from airflow.providers.microsoft.azure.hooks.wasb import WasbHook
 from airflow import settings
 from airflow.models import Connection
 
 account_name = 'terraformaccount2'
-key = 'xxxxxxx'
+key = 'R+7/s6BFH+O+qCmdOfRrBdls94+VqkA51KwT/xOig5Hsl+LiHZJ7hv8zN36InVhWfNf46g5YVlNcpB6JtqUZRQ=='
 conn_id='wasb_default'
 
 conn = Connection(
@@ -32,7 +32,6 @@ hook = WasbHook(wasb_conn_id='wasb_default')
 AZURE_CONTAINER_NAME = 'tfstate'
 blob_name ='ls.csv'
 file_path = '../'
-
 
 # Azure strings
 connection_string = 'DefaultEndpointsProtocol=https;AccountName=terraformaccount2;AccountKey=R+7/s6BFH+O+qCmdOfRrBdls94+VqkA51KwT/xOig5Hsl+LiHZJ7hv8zN36InVhWfNf46g5YVlNcpB6JtqUZRQ==;EndpointSuffix=core.windows.net'
