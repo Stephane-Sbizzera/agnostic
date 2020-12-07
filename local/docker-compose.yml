@@ -140,6 +140,7 @@ services:
           - LOAD_EX=n
           - EXECUTOR=Celery
           - FERNET_KEY=46BKJoQYlPPOexq0OhDZnIlNepKFf87WFwLbfzqDDho=
+          - PATH=$PATH:/usr/local/airflow/.local/bin/
       volumes: # mount the following local folders
           - ./airflow_docker/dags:/usr/local/airflow/dags
           - ./airflow_docker/data:/usr/local/airflow/data
