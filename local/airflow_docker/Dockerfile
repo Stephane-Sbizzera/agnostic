@@ -4,6 +4,7 @@ RUN export AIRFLOW_HOME=/.local/bin/
 RUN PATH=$PATH:/.local/bin/
 ENV AIRFLOW_HOME=${AIRFLOW_HOME}
 COPY requirements.txt .
+COPY /dags ./dags
 COPY test.py .
 RUN pip3 install --user -r requirements.txt
 #RUN pip3 install --user apache-airflow--upgrade
