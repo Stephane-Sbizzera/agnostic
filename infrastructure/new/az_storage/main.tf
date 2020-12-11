@@ -1,5 +1,5 @@
 resource "azurerm_storage_account" "example" {
-  name                     = "${random_string.prefix2.id}"
+  name                     = "st-${terraform.workspace}"
   resource_group_name      = var.resource_group_name
   location                 = var.location
   account_tier             = "Standard"
@@ -7,7 +7,7 @@ resource "azurerm_storage_account" "example" {
 }
 
 resource "azurerm_storage_share" "example" {
-  name                 = "${random_string.prefix2.id}"
+  name                 = "sts-${terraform.workspace}"
   storage_account_name = azurerm_storage_account.example.name
   quota                = 50
 

@@ -27,7 +27,7 @@ output "ekc_host" {
 }
 
 output "ekc_subnet_id" {
-  value = "${azurerm_kubernetes_cluster.k8s.agent_pool_profile.0.vnet_subnet_id}"
+  value = "${azurerm_kubernetes_cluster.k8s.default_node_pool.0.vnet_subnet_id}"
 }
 
 output "ekc_network_plugin" {

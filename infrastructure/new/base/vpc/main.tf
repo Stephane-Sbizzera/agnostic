@@ -6,7 +6,4 @@ resource "azurerm_virtual_network" "vpc" {
   location            = "${var.location}"
   resource_group_name = "${var.res_group_name}"
 
-  tags {
-    environment = "${terraform.workspace}"
-  }
 }

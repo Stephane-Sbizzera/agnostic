@@ -4,19 +4,16 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   resource_group_name = "${var.res_group_name}"
   dns_prefix          = "k8s-${terraform.workspace}"
 
-  linux_profile {
-    admin_username = "ubuntu"
-
-    ssh_key {
-      key_data = "${file("${var.ssh_public_key}")}"
+  addon_profile {
+    kube_dashboard {
+      enabled = true
     }
   }
 
-  agent_pool_profile {
+  default_node_pool {
     name            = "agentpool"
-    count           = "${var.agent_count[terraform.workspace]}"
+    node_count           = "${var.agent_count[terraform.workspace]}"
     vm_size         = "Standard_DS2_v2"
-    os_type         = "Linux"
     os_disk_size_gb = 30
     vnet_subnet_id  = "${var.subnet_id}"
   }
@@ -30,7 +27,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
     network_plugin = "azure"
   }
 
-  tags {
+  tags = {
     Environment = "${terraform.workspace}"
   }
 }

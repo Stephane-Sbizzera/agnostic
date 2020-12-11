@@ -5,23 +5,27 @@ docker container run -it --rm --mount type=bind,source="$(pwd)",target=/workspac
 
 RESOURCE_GROUP_NAME="Terraform"
 STORAGE_ACCOUNT="terraformaccountx"
-export AZ_SUBSCRIPTION_ID=$(az account show --query id --out tsv)
-az ad sp create-for-rbac --name terraform --role="Contributor" --scopes="/subscriptions/$AZ_SUBSCRIPTION_ID"
+export ARM_SUBSCRIPTION_ID="6c5c1c25-0d56-4a79-92f5-27fc017d2289"
+az login 
 
-az group create --name $RESOURCE_GROUP_NAME --location "Southeast Asia"
+az account list --output table
 
-az storage account create -n $STORAGE_ACCOUNT -g $RESOURCE_GROUP_NAME -l southeastasia --sku Standard_LRS
+az account set --subscription $ARM_SUBSCRIPTION_ID
+az ad sp create-for-rbac --name terraform --scopes="/subscriptions/$ARM_SUBSCRIPTION_ID"
+az ad sp create-for-rbac --skip-assignment
 
-ACCOUNT_KEY="$(az storage account keys list -g $RESOURCE_GROUP_NAME -n $STORAGE_ACCOUNT --query [0].value -o tsv)"
+az group create --name $RESOURCE_GROUP_NAME --location "eastus"
+az storage account create --resource-group $RESOURCE_GROUP_NAME --name $STORAGE_ACCOUNT 
 
-<!-- ACCOUNT_KEY="Qk/Da9Yr0dwMQkZrZHsSrE1jL98Iqus2xMaXhkcrJNKDfPAbFWSU4lU0nRP7Vzn0QGg82xsZoZdrAre3UEKFGg==" -->
+ACCOUNT_KEY=$(az storage account keys list -g $RESOURCE_GROUP_NAME -n $STORAGE_ACCOUNT --query '[0].value' -o tsv)
+
 az storage container create -n tfstate --account-name $STORAGE_ACCOUNT --account-key $ACCOUNT_KEY
 
-export AZ_CLIENT_ID=$(az ad sp list --query "[?appDisplayName == 'terraform']|[].appId" --out tsv)
-export AZ_TENANT_ID=$(az ad sp list --display-name terraform --query "[].appOwnerTenantId" --out tsv) 
-export AZ_CLIENT_NAME_ID=$(az ad sp list --query "[?appDisplayName == 'terraform']|[].appId" --out tsv)
-export AZ_CLIENT_SECRET="45wUKvTLxBW5Zz3.EI9M6nt2hSRM-FI_Eq"
+export ARM_CLIENT_ID=$(az ad sp list --query "[?appDisplayName == 'terraform']|[].appId" --out tsv)
+export ARM_TENANT_ID=$(az ad sp list --display-name terraform --query "[].appOwnerTenantId" --out tsv) 
+export ARM_CLIENT_NAME_ID=$(az ad sp list --query "[?appDisplayName == 'terraform']|[].appId" --out tsv)
+printenv | grep ARM
 
 terraform init -backend-config=backend.tfvars
-
-https://github.com/mudrii/akc_sql_terraform
+terraform workspace new dev
+terraform apply -auto-approve

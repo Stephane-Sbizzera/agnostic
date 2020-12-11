@@ -2,13 +2,7 @@ resource "azurerm_postgresql_server" "az_psql" {
   name                = "az-${terraform.workspace}-psql"
   location            = "${var.location}"
   resource_group_name = "${var.res_group_name}"
-
-  sku {
-    name     = "B_Gen5_2"
-    capacity = "${var.pgsql_capacity[terraform.workspace]}"
-    tier     = "${var.pgsql_tier[terraform.workspace]}"
-    family   = "Gen5"
-  }
+  sku_name = "B_Gen5_2"
 
   storage_profile {
     storage_mb            = "${var.pgsql_storage[terraform.workspace]}"
@@ -20,8 +14,8 @@ resource "azurerm_postgresql_server" "az_psql" {
   administrator_login_password = "${var.pgsql_password}"
   version                      = "9.6"
   ssl_enforcement              = "Enabled"
- 
-	 tags {
+
+  tags = {
     Environment = "${terraform.workspace}"
   }
 }
