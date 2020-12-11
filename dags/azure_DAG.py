@@ -35,7 +35,7 @@ AZURE_CONTAINER_NAME = 'tfstate'
 blob_name ='ls.csv'
 file_path = './data/ls.csv'
 
-hook.get_file(file_path, AZURE_CONTAINER_NAME, blob_name)
+# hook.get_file(file_path, AZURE_CONTAINER_NAME, blob_name)
 
 def callAzure(**kwargs):
     file_path = kwargs['file_path']
